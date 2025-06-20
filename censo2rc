@@ -1,0 +1,107 @@
+[prescreening]
+threshold = 4.0
+func = pbe-d4
+basis = def2-SV(P)
+prog = orca
+gfnv = gfn2
+run = True
+template = False
+
+[screening]
+threshold = 3.5
+func = r2scan-3c
+basis = def2-TZVP
+prog = orca
+sm = smd
+gfnv = gfn2
+run = True
+implicit = False
+template = False
+
+[optimization]
+optcycles = 8
+maxcyc = 200
+threshold = 1.5
+hlow = 0.01
+gradthr = 0.01
+func = r2scan-3c
+basis = def2-TZVP
+prog = orca
+sm = smd
+gfnv = gfn2
+optlevel = normal
+run = True
+macrocycles = True
+crestcheck = False
+template = False
+constrain = False
+xtb_opt = True
+
+[refinement]
+threshold = 0
+func = wb97x-v
+basis = def2-TZVP
+prog = orca
+sm = smd
+gfnv = gfn2
+run = True
+implicit = False
+template = False
+
+[nmr]
+resonance_frequency = 300.0
+ss_cutoff = 8.0
+prog = orca
+func_j = pbe0-d4
+basis_j = def2-TZVP
+sm_j = smd
+func_s = pbe0-d4
+basis_s = def2-TZVP
+sm_s = smd
+gfnv = gfn2
+run = False
+template = False
+couplings = True
+fc_only = True
+shieldings = True
+h_active = True
+c_active = True
+f_active = False
+si_active = False
+p_active = False
+
+[uvvis]
+prog = orca
+func = wb97x-d4
+basis = def2-TZVP
+sm = smd
+gfnv = gfn2
+nroots = 20
+run = False
+template = False
+
+[general]
+imagthr = -100.0
+sthr = 0.0
+scale = 1.0
+temperature = 298.15
+solvent = h2o
+sm_rrho = alpb
+multitemp = True
+evaluate_rrho = True
+consider_sym = True
+bhess = True
+rmsdbias = False
+balance = True
+gas-phase = False
+copy_mo = True
+retry_failed = True
+trange = [273.15, 373.15, 5]
+
+[paths]
+orcapath = /sw/apps/orca/6.0.1/openmpi-4.1.6-avx2/orca
+xtbpath = /u/au/sa/mdooley/.conda/envs/obabel/bin/xtb
+orcaversion = 6.0.1
+mpshiftpath = 
+escfpath = 
+

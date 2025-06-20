@@ -1,0 +1,8 @@
+! XTB ALPB(WATER)
+
+%solvator
+nsolv {nsolv}
+end
+
+* xyz {charge} {spin}
+{coordinates}*

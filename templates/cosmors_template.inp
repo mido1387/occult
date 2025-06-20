@@ -1,0 +1,7 @@
+%cosmors
+  solvent "Water"
+  dftfunc "BP86 tightopt"
+end
+
+* xyzfile {charge} {spin} {template}.xyz
+

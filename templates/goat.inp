@@ -1,0 +1,10 @@
+!GOAT XTB2 ALPB(Water)
+
+%pal
+nprocs 4
+end
+
+*XYZ {charge} {spin} 
+PASTE COORDINATES HERE
+*
+
