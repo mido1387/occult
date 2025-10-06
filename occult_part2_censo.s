@@ -30,6 +30,9 @@ ORIG_DIR=$SLURM_SUBMIT_DIR
 CONFIG_FILE="$ORIG_DIR/workflow.conf"
 source $CONFIG_FILE
 
+# update solvent
+bash update_censo_solvent.sh
+
 # --- Prepare and Run CENSO in a permanent subdirectory ---
 cd "$ORIG_DIR" || { echo "Failed to enter original directory"; exit 1; }
 

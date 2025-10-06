@@ -1,4 +1,4 @@
-!GOAT XTB2 ALPB(Water)
+!GOAT XTB2 ALPB({solvent})
 
 %pal
 nprocs 36

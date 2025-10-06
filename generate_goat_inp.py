@@ -2,6 +2,7 @@ from pathlib import Path
 import argparse
 
 def extract_coordinates(xyz_path, nsolv=0):
+    """Extracts coordinates, labeling fragments if solvent molecules are present."""
     with open(xyz_path, 'r') as f:
         lines = f.readlines()
     coord_lines = lines[2:]  # skip first two lines
@@ -30,13 +31,15 @@ def extract_coordinates(xyz_path, nsolv=0):
 
     return labeled_coords
 
-def insert_coordinates_and_variables(template_path, coordinates, output_path, charge, spin):
+def insert_coordinates_and_variables(template_path, coordinates, output_path, charge, spin, solvent):
+    """Inserts coordinates and replaces placeholders in the template file."""
     with open(template_path, 'r') as f:
         template = f.read()
 
     coord_block = ''.join(coordinates).strip()
     content = template.replace("PASTE COORDINATES HERE", coord_block)
-    content = content.replace("{charge}", str(charge)).replace("{spin}", str(spin))
+    # NEW: Added solvent replacement
+    content = content.replace("{charge}", str(charge)).replace("{spin}", str(spin)).replace("{solvent}", solvent)
 
     # Ensure parent directory exists
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -47,10 +50,13 @@ def insert_coordinates_and_variables(template_path, coordinates, output_path, ch
     print(f"GOAT input file written to: {output_path}")
 
 if __name__ == "__main__":
+    # --- Argument Parsing ---
     parser = argparse.ArgumentParser(description="Insert coordinates and variables into goat.inp template.")
     parser.add_argument("xyz_file", help="Path to the .solvator.xyz file")
     parser.add_argument("charge", type=int, help="Molecular charge")
     parser.add_argument("spin", type=int, help="Molecular spin multiplicity")
+    # NEW: Added solvent argument
+    parser.add_argument("solvent", type=str, help="Solvent name for the calculation")
     parser.add_argument(
         "--template",
         default=Path(__file__).resolve().parent / "templates" / "goat.inp",
@@ -65,10 +71,12 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
+    # --- Script Execution ---
     coords = extract_coordinates(args.xyz_file, args.nsolv)
     prefix = Path(args.xyz_file).stem.replace(".solvator", "")
 
     output_dir = Path("goat")
     output_file = output_dir / f"{prefix}.goat.inp"
 
-    insert_coordinates_and_variables(args.template, coords, output_file, args.charge, args.spin)
+    # NEW: Passed the solvent argument to the function
+    insert_coordinates_and_variables(args.template, coords, output_file, args.charge, args.spin, args.solvent)

@@ -5,6 +5,7 @@ import argparse
 
 
 def read_template(file_path):
+    """Reads the content of a template file."""
     try:
         with open(file_path, 'r') as file:
             return file.read()
@@ -14,6 +15,7 @@ def read_template(file_path):
 
 
 def extract_geometry(xyz_file):
+    """Extracts atomic coordinates from the third line onwards in an xyz file."""
     try:
         with open(xyz_file, 'r') as file:
             lines = file.readlines()[2:]  # Extract from line 3 onward
@@ -24,6 +26,7 @@ def extract_geometry(xyz_file):
 
 
 def create_xyz_copy(xyz_file, suffix):
+    """Creates a suffixed copy of an xyz file."""
     try:
         filename = os.path.splitext(os.path.basename(xyz_file))[0]
         new_xyz_file_name = os.path.join(os.path.dirname(xyz_file), f"{filename}_{suffix}.xyz")
@@ -35,18 +38,21 @@ def create_xyz_copy(xyz_file, suffix):
         return None
 
 
-def create_template_copy(template_content, xyz_file, copied_xyz_file, charge, spin):
+def create_template_copy(template_content, xyz_file, copied_xyz_file, charge, spin, solvent):
+    """Creates a new input file by replacing placeholders in the template."""
     try:
         new_xyz_filename = os.path.splitext(os.path.basename(copied_xyz_file))[0]
         geometry_data = extract_geometry(xyz_file)
         if geometry_data is None:
             return
 
+        # Replace all placeholders with provided values
         modified_content = template_content
         modified_content = modified_content.replace("{template}", new_xyz_filename)
         modified_content = modified_content.replace("{geometry}", geometry_data)
         modified_content = modified_content.replace("{charge}", str(charge))
         modified_content = modified_content.replace("{spin}", str(spin))
+        modified_content = modified_content.replace("{solvent}", solvent) # NEW: Replaced solvent placeholder
 
         new_template_file_name = os.path.join(os.path.dirname(copied_xyz_file), f"{new_xyz_filename}.inp")
 
@@ -59,12 +65,16 @@ def create_template_copy(template_content, xyz_file, copied_xyz_file, charge, sp
 
 
 if __name__ == "__main__":
+    # --- Argument Parsing ---
     parser = argparse.ArgumentParser(description="Prepare ORCA input files from xyz geometries.")
     parser.add_argument("--directory", default=".", help="Directory containing CONF xyz files")
     parser.add_argument("--charge", type=int, required=True, help="Molecular charge")
     parser.add_argument("--spin", type=int, required=True, help="Spin multiplicity")
+    # NEW: Added solvent argument
+    parser.add_argument("--solvent", type=str, required=True, help="Solvent name for COSMO model (e.g., 'water')")
     args = parser.parse_args()
 
+    # --- Script Execution ---
     suffix = "COSMO"
     template_path = os.path.join(os.path.dirname(__file__), "templates", "cosmors_template.inp")
     template = read_template(template_path)
@@ -77,4 +87,5 @@ if __name__ == "__main__":
             for xyz_file in xyz_files:
                 copied_xyz_file = create_xyz_copy(xyz_file, suffix)
                 if copied_xyz_file:
-                    create_template_copy(template, xyz_file, copied_xyz_file, args.charge, args.spin)
+                    # NEW: Passed the solvent argument to the function
+                    create_template_copy(template, xyz_file, copied_xyz_file, args.charge, args.spin, args.solvent)

@@ -1,5 +1,5 @@
 %cosmors
-  solvent "Water"
+  solvent "{solvent}"
   dftfunc "BP86 tightopt"
 end
 

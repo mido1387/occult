@@ -1,6 +1,6 @@
 #!/bin/bash
 # PART 1: Initial ORCA Jobs (MPI Parallel)
-#SBATCH --job-name=occult_part1
+#SBATCH --job-name=v3_test_occult_part1
 #SBATCH --output=occult_part1.out
 #SBATCH --error=occult_part1.err
 #SBATCH --nodes=1
@@ -13,6 +13,7 @@ XYZ_FILE="REPLACE.xyz"
 CHARGE=0
 SPIN=1
 NSOLV=0
+SOLVENT=Water
 
 echo "--- Starting Part 1: Initial ORCA Calculations ---"
 
@@ -43,11 +44,13 @@ export XYZ_FILE="$XYZ_FILE"
 export CHARGE="$CHARGE"
 export SPIN="$SPIN"
 export NSOLV="$NSOLV"
+export SOLVENT="$SOLVENT"
 export BASENAME="$BASENAME"
 EOL
 
 # --- Run Initial Steps ---
-python nsolv.py $NSOLV $XYZ_FILE $CHARGE $SPIN
+# MODIFIED: Added $SOLVENT to the python script call
+python nsolv.py $NSOLV $XYZ_FILE $CHARGE $SPIN $SOLVENT
 
 # Define file paths and run first ORCA job
 SOLV_INP="nsolv/${BASENAME}_nsolv_${NSOLV}.inp"
@@ -55,7 +58,8 @@ echo "Running ORCA on $SOLV_INP..."
 /sw/apps/orca/6.0.0/openmpi-4.1.6/orca "$SOLV_INP" > "${SOLV_INP%.inp}.out"
 
 # Generate GOAT input
-python generate_goat_inp.py "nsolv/${BASENAME}_nsolv_${NSOLV}.solvator.xyz" $CHARGE $SPIN --nsolv ${NSOLV}
+# MODIFIED: Added $SOLVENT to the python script call
+python generate_goat_inp.py "nsolv/${BASENAME}_nsolv_${NSOLV}.solvator.xyz" $CHARGE $SPIN $SOLVENT --nsolv ${NSOLV}
 
 # Define GOAT file path and run second ORCA job
 GOAT_INP="goat/${BASENAME}_nsolv_${NSOLV}.goat.inp"

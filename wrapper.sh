@@ -48,6 +48,7 @@ SCRIPTS_TO_COPY=(
     "organize_orca_jobs.py"
     "pull_cosmo_gsolv.py"
     "split_xyz_censo.sh"
+    "update_censo_solvent.sh"
 )
 
 for script in "${SCRIPTS_TO_COPY[@]}"; do
@@ -103,6 +104,7 @@ echo "Please review and edit the SLURM script 'occult.s' for other settings:"
 echo "  - CHARGE=0                      # Set to your molecule's charge"
 echo "  - SPIN=1                        # Set to your molecule's spin"
 echo "  - NSOLV=0                       # Desired number of explicit water molecules"
+echo "  - Solvent=Water                 # Desired solvent (check if ALPB and COSMO support it)"
 echo "  - Any other SLURM parameters or paths specific to your system"
 echo "=================================================================="
 echo

@@ -1,4 +1,4 @@
-! XTB ALPB(WATER)
+! XTB ALPB({solvent})
 
 %solvator
 nsolv {nsolv}

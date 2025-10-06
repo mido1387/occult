@@ -8,7 +8,7 @@ run = True
 template = False
 
 [screening]
-threshold = 3.5
+threshold = 3.0
 func = r2scan-3c
 basis = def2-TZVP
 prog = orca
@@ -85,7 +85,7 @@ imagthr = -100.0
 sthr = 0.0
 scale = 1.0
 temperature = 298.15
-solvent = h2o
+solvent = {solvent}
 sm_rrho = alpb
 multitemp = True
 evaluate_rrho = True

@@ -37,7 +37,7 @@ cp "$REFINEMENT_OUT" orca_cosmo/
 cd orca_cosmo || { echo "Failed to enter orca_cosmo directory"; exit 1; }
 
 bash ../split_xyz_censo.sh "$(basename "$REFINEMENT_XYZ")"
-python ../orca_cosmo_prep.py --charge $CHARGE --spin $SPIN
+python ../orca_cosmo_prep.py --charge $CHARGE --spin $SPIN --solvent $SOLVENT 
 python ../organize_orca_jobs.py
 cd ..
 
