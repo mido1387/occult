@@ -1,6 +1,6 @@
 #!/bin/bash
 # PART 1: Initial ORCA Jobs (MPI Parallel)
-#SBATCH --job-name=occult_part1
+#SBATCH --job-name=v4_test_occult_part1
 #SBATCH --output=occult_part1.out
 #SBATCH --error=occult_part1.err
 #SBATCH --nodes=1
@@ -9,22 +9,46 @@
 #SBATCH --time=2-00:00:00
 
 # --- User-Defined Variables ---
-XYZ_FILE="REPLACE.xyz"
+XYZ_FILE="methane.xyz"
 CHARGE=0
 SPIN=1
 NSOLV=0
-SOLVENT=Water
+SOLVENT=Octanol
 
-echo "--- Starting Part 1: Initial ORCA Calculations ---"
+# --- Part 0: Load User Paths and Set Up Environment ---
+
+# Source the configuration file
+source "${SLURM_SUBMIT_DIR}/config.sh"
+
+# 2. Check if the ORCA_INSTALL_DIR variable was loaded correctly.
+if [ -z "$ORCA_INSTALL_DIR" ] || [ ! -d "$ORCA_INSTALL_DIR" ]; then
+  echo "Error: ORCA_INSTALL_DIR is not set or not a valid directory in config.sh." >&2
+  exit 1
+fi
 
 # --- Setup and Module Loading ---
-set -xv # Verbose logging
-module load mpi/openmpi/gcc/4.1.6
-module load apps/python3
-source activate obabel
+set -e #change the e to xv for verbose debugging
+# Load modules specified in the config file
+if [ -n "$REQUIRED_MODULES" ]; then
+  echo "Loading modules: $REQUIRED_MODULES"
+  module load $REQUIRED_MODULES
+else
+  echo "No modules specified in config file."
+fi
 
-export PATH=/sw/apps/orca/6.0.1/openmpi-4.1.6-avx2/bin:$PATH
-export LD_LIBRARY_PATH=/sw/apps/orca/6.0.1/openmpi-4.1.6-avx2/lib:$LD_LIBRARY_PATH
+# Activate Conda environment
+if [ -n "$CONDA_ENV_NAME" ]; then
+  echo "Activating Conda environment: $CONDA_ENV_NAME"
+  # Assuming 'conda' is available after loading modules or is in the default PATH
+  source activate "$CONDA_ENV_NAME"
+else
+  echo "Error: CONDA_ENV_NAME is not set in config.sh." >&2
+  exit 1
+fi
+
+echo "Setting up environment for ORCA installation at: $ORCA_INSTALL_DIR"
+export PATH="${ORCA_INSTALL_DIR}/bin:$PATH"
+export LD_LIBRARY_PATH="${ORCA_INSTALL_DIR}/lib:$LD_LIBRARY_PATH"
 
 cd $SLURM_SUBMIT_DIR
 
@@ -48,6 +72,8 @@ export SOLVENT="$SOLVENT"
 export BASENAME="$BASENAME"
 EOL
 
+echo "--- Starting Part 1: Initial ORCA Calculations ---"
+
 # --- Run Initial Steps ---
 # MODIFIED: Added $SOLVENT to the python script call
 python nsolv.py $NSOLV $XYZ_FILE $CHARGE $SPIN $SOLVENT
@@ -55,7 +81,7 @@ python nsolv.py $NSOLV $XYZ_FILE $CHARGE $SPIN $SOLVENT
 # Define file paths and run first ORCA job
 SOLV_INP="nsolv/${BASENAME}_nsolv_${NSOLV}.inp"
 echo "Running ORCA on $SOLV_INP..."
-/sw/apps/orca/6.0.0/openmpi-4.1.6/orca "$SOLV_INP" > "${SOLV_INP%.inp}.out"
+"$ORCA_EXEC" "$SOLV_INP" > "${SOLV_INP%.inp}.out"
 
 # Generate GOAT input
 # MODIFIED: Added $SOLVENT to the python script call
@@ -64,7 +90,7 @@ python generate_goat_inp.py "nsolv/${BASENAME}_nsolv_${NSOLV}.solvator.xyz" $CHA
 # Define GOAT file path and run second ORCA job
 GOAT_INP="goat/${BASENAME}_nsolv_${NSOLV}.goat.inp"
 echo "Running ORCA on $GOAT_INP..."
-/sw/apps/orca/6.0.0/openmpi-4.1.6/orca "$GOAT_INP" > "${GOAT_INP%.inp}.out"
+"$ORCA_EXEC" "$GOAT_INP" > "${GOAT_INP%.inp}.out"
 
 # --- Prepare Handoff for Part 2 ---
 FINAL_ENSEMBLE=$(find goat -name "*finalensemble.xyz" | head -n 1)

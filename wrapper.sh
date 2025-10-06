@@ -37,7 +37,7 @@ echo "Setting up OCCULT environment for $XYZ_FILE..."
 # Copy all necessary scripts into the current directory.
 # Using a 'for' loop to provide better feedback on copy status.
 SCRIPTS_TO_COPY=(
-    "censo2rc"
+    "censo2rc.template"
     "generate_goat_inp.py"
     "gsolv_process.py"
     "nsolv.py"
@@ -48,7 +48,7 @@ SCRIPTS_TO_COPY=(
     "organize_orca_jobs.py"
     "pull_cosmo_gsolv.py"
     "split_xyz_censo.sh"
-    "update_censo_solvent.sh"
+    "update_censo2rc.sh"
 )
 
 for script in "${SCRIPTS_TO_COPY[@]}"; do

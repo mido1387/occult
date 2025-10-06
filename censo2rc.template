@@ -99,9 +99,8 @@ retry_failed = True
 trange = [273.15, 373.15, 5]
 
 [paths]
-orcapath = /sw/apps/orca/6.0.1/openmpi-4.1.6-avx2/orca
-xtbpath = /u/au/sa/mdooley/.conda/envs/obabel/bin/xtb
-orcaversion = 6.0.1
+orcapath = {orcapath}
+xtbpath = {xtbpath}
+orcaversion = {orcaversion}
 mpshiftpath = 
 escfpath = 
-
