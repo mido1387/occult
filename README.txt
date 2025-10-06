@@ -16,30 +16,23 @@ Do you want to use this version of occult? here are the quick instructions:
 
 Requirements:
 ORCA 6.0.0+
-SLURM managed computing cluster
+SLURM 
 XTB 
-CENSO
-Python 3 environment with: Openbabel and pandas installed
+Python 3 environment with: CENSO, openbabel and pandas installed
 
-Update the following: update the paths to the correct orca and xtb paths in the 'censo2rc' file, 
+Update eveything in the config.sh file to match your ORCA/XTB/Conda environment (with CENSO installed)
+If you want to use the wrapper, update the two filepaths OCCULT_DIR and TEMPLATES_DIR to wherever the directory you put these scripts into
 
-Normal use, place the wrapper.sh and your .xyz file (doesn't need to be optimized) in the same folder and:
+Normal use: place the wrapper.sh and your .xyz file (doesn't need to be optimized) in the same folder and:
 bash wrapper.sh yourmolecule.xyz
 
 It will then prompt you to edit a few lines in occult_part1_orca.s, CHARGE, SPIN, and NSOLV, where nsolv is the number
-of explicit waters you would like to add (can be changed to another solvent by editing the nsolv template)
+of explicit waters you would like to add (can be changed to another solvent by editing the nsolv template) and SOLVENT, 
+where you pick the solvent (make sure it is supportde by ALPB and openCOSMO by checking their webpages)
 
 sbatch occult_part1_orca.s, and it once that is done it will automatically run the
 other two scripts. 
 
 If you have a orca_cosmo folder with a weighted_results.csv in it, then the job was successful, if not, start by looking in the censo folder for any errors.
 
-To set up you need to change:
-conda activate obabel in the occult_part1_orca.s to match your python environment where CENSO is installed (mine was obabel)
-
-Make sure the paths to orca and xtb are correct for your system
-
-Update the paths in the wrapper to tell it where the occult and templates folders are
-
-
-Update file paths in censo2rc file at the bottom as well
+The final optimized geometries and energies are found it the 3_REFINEMENT.xyz and 3_REFINEMENT.out files (in both the censo and orca_cosmo folders)
