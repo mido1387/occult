@@ -7,10 +7,10 @@ This package uses slurm scripts to automatically:
 2. Add explicit solvent molecules (if desired) with ORCA's SOLVATOR (driven by XTB)
 3. Generate a massive ensemble of conformers with the Global Optimizer Algorithm (GOAT) in ORCA
 4. Sort and optimize the ensemble down to the best conformers, rank them with a Boltzman distribution using Command line Ensemble-Sorting (CENSO)
-  4a. Screen conformers with XTB (can be changed by user)
-  4b. Screen remaining confomers with r2scan-3c (can be changed by user)
-  4c. optimize best confomers with wB97x-v/def2-TZVP (can be changed by user)
-5. Calculate solvation free energy of best conformers using openCOSMO-RS
+5. CENSO pt 1 Screen conformers with XTB (can be changed by user)
+6. CENSO pt 2 Screen remaining confomers with r2scan-3c (can be changed by user)
+7. CENSO pt 3 optimize best confomers with wB97x-v/def2-TZVP (can be changed by user)
+8. Calculate solvation free energy of best conformers using openCOSMO-RS
 
 From just an input .xyz you now have a list of optimized conformers as well as a solvation energy, with explicit solvent included if desired.
 
