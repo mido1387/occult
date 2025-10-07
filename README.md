@@ -1,5 +1,7 @@
 # ORCA CENSO COSMO-RS ULTIMATE (OCCULT) workflow
 
+<img width="667" height="680" alt="occult_logo" src="https://github.com/user-attachments/assets/9ff3ac33-593e-4375-a652-3d36cc16b7f9" />
+
 This package uses slurm scripts to automatically:
 1. Preoptimize an input .xyz geometry
 2. Add explicit solvent molecules (if desired) with ORCA's SOLVATOR (driven by XTB)
