@@ -9,11 +9,11 @@
 #SBATCH --time=2-00:00:00
 
 # --- User-Defined Variables ---
-XYZ_FILE="methane.xyz"
+XYZ_FILE="REPLACE.xyz"
 CHARGE=0
 SPIN=1
 NSOLV=0
-SOLVENT=Octanol
+SOLVENT=Water
 
 # --- Part 0: Load User Paths and Set Up Environment ---
 
