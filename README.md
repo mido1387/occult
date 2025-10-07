@@ -17,10 +17,10 @@ From just an input .xyz you now have a list of optimized conformers as well as a
 **Do you want to use this version of occult? here are the quick instructions:**
 
 ## Requirements
-ORCA 6.0.0+
-SLURM managed computer
-XTB 
-Python 3 
+ORCA 6.0.0+, 
+SLURM managed computer, 
+XTB,  
+Python 3, 
 Conda environment with: CENSO, openbabel and pandas installed
 
 CENSO/XTB manual : https://xtb-docs.readthedocs.io/en/latest/CENSO_docs/censo.html
