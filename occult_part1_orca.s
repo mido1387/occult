@@ -1,6 +1,6 @@
 #!/bin/bash
 # PART 1: Initial ORCA Jobs (MPI Parallel)
-#SBATCH --job-name=v4_test_occult_part1
+#SBATCH --job-name=occult_part1
 #SBATCH --output=occult_part1.out
 #SBATCH --error=occult_part1.err
 #SBATCH --nodes=1
