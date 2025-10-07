@@ -1,0 +1,10 @@
+!GOAT XTB2 ALPB({solvent})
+
+%pal
+nprocs 36
+end
+
+*XYZ {charge} {spin} 
+PASTE COORDINATES HERE
+*
+

@@ -1,0 +1,12 @@
+! XTB ALPB({solvent})
+
+%solvator
+nsolv {nsolv}
+end
+
+%pal
+nprocs 36
+end
+
+* xyz {charge} {spin}
+{coordinates}*

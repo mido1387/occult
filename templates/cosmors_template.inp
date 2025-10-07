@@ -1,0 +1,11 @@
+%cosmors
+  solvent "{solvent}"
+  dftfunc "BP86 tightopt"
+end
+
+%pal
+nprocs 36
+end
+
+* xyzfile {charge} {spin} {template}.xyz
+
