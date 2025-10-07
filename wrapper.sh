@@ -49,6 +49,7 @@ SCRIPTS_TO_COPY=(
     "pull_cosmo_gsolv.py"
     "split_xyz_censo.sh"
     "update_censo2rc.sh"
+    "config.sh"
 )
 
 for script in "${SCRIPTS_TO_COPY[@]}"; do
