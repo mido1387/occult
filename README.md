@@ -1,5 +1,8 @@
 # ORCA CENSO COSMO-RS ULTIMATE (OCCULT) workflow
 
+# AFTER SIGNIFICANT BENCHMARKING, THIS METHOD HAS PROVEN TO BE EXCESSIVE. FOR FUTURE openCOSMO-RS CALCULATIONS, THE FOLLOWING DEFAULT WORKFLOW IS RECOMMENDED : https://github.com/TUHH-TVT/openCOSMO-RS_conformer_pipeline
+
+
 <img width="667" height="680" alt="occult_logo" src="https://github.com/user-attachments/assets/9ff3ac33-593e-4375-a652-3d36cc16b7f9" />
 
 This package uses slurm scripts to automatically:
